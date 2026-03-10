@@ -2,6 +2,12 @@
 
 This document tracks all custom modifications made to the Craft Agents codebase for your ZimaOS deployment.
 
+## Version Information
+
+**Base Version:** v0.7.2 (merged from upstream)  
+**Custom Commit:** 7c2783c - Merge upstream v0.7.2 with custom fixes preserved  
+**Fork:** https://github.com/tunwinlat/craft-agents-oss
+
 ## Current Fixes (Applied)
 
 ### 1. File Access Fix - CRAFT_CONFIG_DIR Support
