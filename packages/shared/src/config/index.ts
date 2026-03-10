@@ -8,6 +8,7 @@ export * from './preferences.ts';
 export * from './storage.ts';
 export * from './theme.ts';
 export * from './validators.ts';
+export * from './cli-domains.ts';
 export {
   ConfigWatcher,
   createConfigWatcher,
