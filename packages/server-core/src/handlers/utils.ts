@@ -1,7 +1,7 @@
 import { normalize, isAbsolute, sep } from 'path'
 import { homedir, tmpdir } from 'os'
 import { realpath } from 'fs/promises'
-import { getWorkspaceByNameOrId, type Workspace } from '@craft-agent/shared/config'
+import { getWorkspaceByNameOrId, type Workspace, CONFIG_DIR } from '@craft-agent/shared/config'
 import type { PlatformServices } from '../runtime/platform'
 
 /**
@@ -48,7 +48,7 @@ export function sanitizeFilename(name: string): string {
 
 /**
  * Validates that a file path is within allowed directories to prevent path traversal attacks.
- * Allowed directories: user's home directory and /tmp
+ * Allowed directories: user's home directory, temp directory, and CRAFT_CONFIG_DIR
  */
 export async function validateFilePath(filePath: string): Promise<string> {
   // Normalize the path to resolve . and .. components
@@ -77,6 +77,7 @@ export async function validateFilePath(filePath: string): Promise<string> {
   const allowedDirs = [
     homedir(),      // User's home directory
     tmpdir(),       // Platform-appropriate temp directory
+    CONFIG_DIR,     // Craft config directory (CRAFT_CONFIG_DIR or ~/.craft-agent)
   ]
 
   // Check if the real path is within an allowed directory (cross-platform)

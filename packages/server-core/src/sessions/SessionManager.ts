@@ -2830,7 +2830,12 @@ export class SessionManager implements ISessionManager {
           // The user needs to review and respond before continuing
           if (managed.isProcessing && managed.agent) {
             sessionLog.info(`Force-aborting after plan submission for session ${managed.id}`)
-            managed.agent.forceAbort(AbortReason.PlanSubmitted)
+            try {
+              managed.agent.forceAbort(AbortReason.PlanSubmitted)
+            } catch (abortError) {
+              // Ignore abort errors - they're expected when force-stopping the agent
+              sessionLog.debug(`Force-abort error (expected): ${abortError instanceof Error ? abortError.message : String(abortError)}`)
+            }
             managed.isProcessing = false
 
             // Release browser overlay + session binding because the agent is no longer running.
@@ -2886,7 +2891,12 @@ export class SessionManager implements ISessionManager {
         // Force-abort execution (like SubmitPlan)
         if (managed.isProcessing && managed.agent) {
           sessionLog.info(`Force-aborting after auth request for session ${managed.id}`)
-          managed.agent.forceAbort(AbortReason.AuthRequest)
+          try {
+            managed.agent.forceAbort(AbortReason.AuthRequest)
+          } catch (abortError) {
+            // Ignore abort errors - they're expected when force-stopping the agent
+            sessionLog.debug(`Force-abort error (expected): ${abortError instanceof Error ? abortError.message : String(abortError)}`)
+          }
           managed.isProcessing = false
 
           // Release browser overlay + session binding because the agent is paused awaiting user auth.
@@ -3843,7 +3853,12 @@ export class SessionManager implements ISessionManager {
 
     // If processing is in progress, force-abort via Query.close() and wait for cleanup
     if (managed.isProcessing && managed.agent) {
-      managed.agent.forceAbort(AbortReason.UserStop)
+      try {
+        managed.agent.forceAbort(AbortReason.UserStop)
+      } catch (abortError) {
+        // Ignore abort errors - they're expected when force-stopping the agent
+        sessionLog.debug(`Force-abort error (expected): ${abortError instanceof Error ? abortError.message : String(abortError)}`)
+      }
       // Brief wait for the query to finish tearing down before we delete session files.
       // Prevents file corruption from overlapping writes during rapid delete operations.
       await new Promise(resolve => setTimeout(resolve, 100))
@@ -4438,7 +4453,12 @@ export class SessionManager implements ISessionManager {
 
     // Force-abort via Query.close() - sends soft interrupt to the backend
     if (managed.agent) {
-      managed.agent.forceAbort(AbortReason.UserStop)
+      try {
+        managed.agent.forceAbort(AbortReason.UserStop)
+      } catch (abortError) {
+        // Ignore abort errors - they're expected when force-stopping the agent
+        sessionLog.debug(`Force-abort error (expected): ${abortError instanceof Error ? abortError.message : String(abortError)}`)
+      }
     }
 
     // Only show "Response interrupted" message when user explicitly clicked Stop

@@ -21,6 +21,17 @@
 
 import { join } from 'node:path'
 import { readFileSync } from 'node:fs'
+
+// Global error handlers to prevent crashes from SDK abort errors
+process.on('uncaughtException', (error) => {
+  console.error('[global] Uncaught exception:', error.message)
+  // Log but don't exit - let the server continue running
+})
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[global] Unhandled rejection at:', promise, 'reason:', reason)
+  // Log but don't exit - let the server continue running
+})
 import { startHeadlessServer } from '@craft-agent/server-core/bootstrap'
 import type { WsRpcTlsOptions } from '@craft-agent/server-core/transport'
 import { registerCoreRpcHandlers, cleanupSessionFileWatchForClient } from '@craft-agent/server-core/handlers/rpc'
