@@ -35,6 +35,22 @@ This document tracks all custom modifications made to the Craft Agents codebase 
 
 **Impact:** Image processing works correctly.
 
+### 4. Pi Agent Server Build (for Kimi/Pi AI models)
+**Problem:** v0.7.2 added native Kimi (Coding) model support via `@mariozechner/pi-ai`, but the `pi-agent-server` package needs to be built before use. Without building, you get error: "piServerPath not configured. Cannot spawn Pi subprocess."
+
+**Solution:** Build the `pi-agent-server` package:
+```bash
+cd /DATA/craft-agents-oss/packages/pi-agent-server
+bun run build
+```
+
+Or run the helper script:
+```bash
+./build-servers.sh
+```
+
+**Impact:** Kimi (Coding) model and other Pi AI models work natively.
+
 ## Update Workflow
 
 When a new Craft Agents version is released:

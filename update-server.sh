@@ -74,7 +74,7 @@ else
 fi
 
 # Step 6: Reinstall dependencies if needed
-echo "[6/7] Checking dependencies..."
+echo "[6/9] Checking dependencies..."
 if [ -f "bun.lock" ]; then
     echo "      Reinstalling dependencies with bun..."
     bun install || {
@@ -83,8 +83,26 @@ if [ -f "bun.lock" ]; then
     }
 fi
 
-# Step 7: Start server
-echo "[7/7] Starting Craft Agents server..."
+# Step 7: Build pi-agent-server for Kimi/Pi AI support
+echo "[7/9] Building pi-agent-server..."
+cd "$CRAFT_DIR/packages/pi-agent-server"
+if bun run build 2>/dev/null; then
+    echo "      ✓ pi-agent-server built successfully"
+else
+    echo "      ⚠️  pi-agent-server build failed (Kimi models may not work)"
+fi
+cd "$CRAFT_DIR"
+
+# Step 8: Verify builds
+echo "[8/9] Verifying builds..."
+if [ -f "$CRAFT_DIR/packages/pi-agent-server/dist/index.js" ]; then
+    echo "      ✓ pi-agent-server: OK"
+else
+    echo "      ✗ pi-agent-server: MISSING"
+fi
+
+# Step 9: Start server
+echo "[9/9] Starting Craft Agents server..."
 sudo systemctl start craft-agents
 sleep 2
 
