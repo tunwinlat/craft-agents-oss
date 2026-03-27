@@ -1,0 +1,7 @@
+{
+  "buildCommand": "bun run web:build",
+  "outputDirectory": "apps/web/dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Craft Agent Web</title>
+    <style>
+      html, body { margin: 0; padding: 0; height: 100%; }
+      body { 
+        background: #fafafa; 
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+      .dark body { background: #1a1a1a; }
+      #root { min-height: 100%; }
+      #root:empty::before {
+        content: 'Loading...';
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        color: #666;
+      }
+      #error-log {
+        display: none;
+        padding: 20px;
+        background: #1a1a2e;
+        color: #ff6b6b;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
+      #error-log.visible { display: block; }
+    </style>
+    <script>
+      window.jsErrors = [];
+      window.addEventListener('error', function(e) {
+        window.jsErrors.push('Error: ' + e.message + ' at ' + e.filename + ':' + e.lineno);
+        document.getElementById('error-log').textContent = window.jsErrors.join('\n');
+        document.getElementById('error-log').className = 'visible';
+        document.getElementById('root').style.display = 'none';
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        window.jsErrors.push('Promise rejection: ' + e.reason);
+        document.getElementById('error-log').textContent = window.jsErrors.join('\n');
+        document.getElementById('error-log').className = 'visible';
+        document.getElementById('root').style.display = 'none';
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <pre id="error-log"></pre>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

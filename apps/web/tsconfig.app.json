@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2023",
+    "useDefineForClassFields": true,
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "types": ["vite/client", "node"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@config/*": ["./src/config/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@craft-agent/core": ["../../packages/core/src/index.ts"],
+      "@craft-agent/core/*": ["../../packages/core/src/*"],
+      "@craft-agent/shared": ["../../packages/shared/src/index.ts"],
+      "@craft-agent/shared/*": ["../../packages/shared/src/*"],
+      "@craft-agent/ui": ["../../packages/ui/src/index.ts"],
+      "@craft-agent/ui/*": ["../../packages/ui/src/*"],
+      "@craft-agent/server-core": ["../../packages/server-core/src/index.ts"],
+      "@craft-agent/server-core/*": ["../../packages/server-core/src/*"]
+    }
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../../packages/core" },
+    { "path": "../../packages/shared" },
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/server-core" }
+  ]
+}
